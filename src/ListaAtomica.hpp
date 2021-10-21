@@ -31,6 +31,24 @@ class ListaAtomica {        // esto es lista atomica
 
     void insertar(const T &valor) {
         // Completar (Ejercicio 1)
+        // creamos el nuevo nodo
+
+        Nodo * nuevo = new Nodo(valor);
+        // buscamos el ultimo
+        Nodo * iter = _cabeza;
+
+        do{
+            nuevo->_siguiente = iter;
+        }
+        while(!(this->_cabeza.compare_exchange_weak(iter,nuevo)));
+            
+        
+        
+
+        
+
+
+        
     }
 
     T& operator[](size_t i) const {
