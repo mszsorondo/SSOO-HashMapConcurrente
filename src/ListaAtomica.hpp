@@ -4,8 +4,8 @@
 #include <atomic>
 #include <cstddef>
 
-template<typename T>
-class ListaAtomica {
+template<typename T> 
+class ListaAtomica {        // esto es lista atomica
  private:
     struct Nodo {
         Nodo(const T &val) : _valor(val), _siguiente(nullptr) {}

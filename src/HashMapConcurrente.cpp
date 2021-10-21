@@ -18,7 +18,7 @@ unsigned int HashMapConcurrente::hashIndex(std::string clave) {
     return (unsigned int)(clave[0] - 'a');
 }
 
-void HashMapConcurrente::incrementar(std::string clave) {
+void HashMapConcurrente::incrementar(std::string clave) { // este tiene que ser atomico
     // Completar (Ejercicio 2)
 }
 
@@ -45,7 +45,6 @@ hashMapPair HashMapConcurrente::maximo() {
 
     return *max;
 }
-
 
 
 hashMapPair HashMapConcurrente::maximoParalelo(unsigned int cant_threads) {

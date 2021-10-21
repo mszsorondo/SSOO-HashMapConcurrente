@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <pthread.h>
+#include <pthread.h>    //lib de threads
 
 #include "CargarArchivos.hpp"
 
