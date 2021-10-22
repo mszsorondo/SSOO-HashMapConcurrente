@@ -3,7 +3,8 @@
 
 #include <atomic>
 #include <cstddef>
-
+#include <mutex>
+using namespace std;
 template<typename T> 
 class ListaAtomica {        // esto es lista atomica
  private:
@@ -15,6 +16,8 @@ class ListaAtomica {        // esto es lista atomica
     };
 
     std::atomic<Nodo *> _cabeza;
+
+    mutex m;
 
  public:
     ListaAtomica() : _cabeza(nullptr) {}
@@ -33,23 +36,27 @@ class ListaAtomica {        // esto es lista atomica
         // Completar (Ejercicio 1)
         // creamos el nuevo nodo
 
-        Nodo * nuevo = new Nodo(valor);
+        Nodo* nuevo = new Nodo(valor);
         // buscamos el ultimo
-        Nodo * iter = _cabeza;
-
+        Nodo* iter = _cabeza;
         do{
             nuevo->_siguiente = iter;
         }
-        while(!(this->_cabeza.compare_exchange_weak(iter,nuevo)));
-            
-        
-        
-
-        
-
-
-        
+        while(!(this->_cabeza.compare_exchange_weak(iter,nuevo))); // polling?
     }
+
+    // void insertar(const T &valor) {
+    //     // Completar (Ejercicio 1)
+    //     // creamos el nuevo nodo
+    //     m.lock();//---------------------
+
+    //     Nodo* nuevo = new Nodo(valor);
+    //     //buscamos el ultimo
+    //     Nodo* iter = _cabeza;
+    //     nuevo->_siguiente = iter;
+        
+    //     m.unlock();//------------------
+    // }
 
     T& operator[](size_t i) const {
         Nodo *n = _cabeza.load();
