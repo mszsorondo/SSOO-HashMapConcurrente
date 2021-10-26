@@ -65,25 +65,80 @@ unsigned int HashMapConcurrente::valor(std::string clave) {
     return(*it).second;
 }
 
+
+// std::mutex ms[26];
 hashMapPair HashMapConcurrente::maximo() {
     hashMapPair *max = new hashMapPair();
     max->second = 0;
 
     for (unsigned int index = 0; index < HashMapConcurrente::cantLetras; index++) {
+        ms[index].lock();
         for (auto &p : *tabla[index]) {
             if (p.second > max->second) {
                 max->first = p.first;
                 max->second = p.second;
             }
         }
+        ms[index].unlock();
     }
 
     return *max;
 }
 
+// void store(T desired, std::memory_order order);
+// T load(std::memory_order = std::memory_order::seq_cst);
+// T fetch_add(T arg, std::memory_order order);
+// bool compare_exchange_weak(T& expected, T desired,
+// std::memory_order order);
+// bool compare_exchange_strong(T& expected, T desired,
+// std::memory_order order);
+// // solo para std::atomic_flag
+// bool test_and_set(std::memory_order order);
+
+
+atomic<int> hash_index;
+vector<hashMapPair> max_value;
+
+void HashMapConcurrente::maxList(){
+    int numList = hash_index.fetch_add(1); // actualizamos index
+    while(numList < 26){
+        // si estamos aca es que podemos buscar linealmente en la lista en index
+
+        //buscamos
+
+        ListaAtomica<hashMapPair> *l = this->tabla[numList];
+        hashMapPair maximoLocal = make_pair("texto", 0);  
+ 
+        for(ListaAtomica<hashMapPair>::iterator it = (*l).begin(); it != (*l).end(); ++it){
+            hashMapPair actual = *it;
+            if(actual.second > maximoLocal.second)
+                maximoLocal = actual; 
+        }
+
+        max_value[numList] = maximoLocal;
+
+        //actualizamos index
+        numList = hash_index.fetch_add(1);
+    }
+    terminate(); // terminar thread
+}
 
 hashMapPair HashMapConcurrente::maximoParalelo(unsigned int cant_threads) {
-    // Completar (Ejercicio 3)
+    hash_index = 0;
+    max_value = vector<hashMapPair>(26);
+    vector<std::thread> ts(cant_threads);
+    
+    for(unsigned int i = 0; i < cant_threads; ++i){ // lanzamos threads
+        ts[i] = thread(&HashMapConcurrente::maxList, this);
+        
+    }
+
+    for(unsigned int i = 0; i < cant_threads ; ++i) // joineamos threads
+        ts[i].join();
+
+    return *max_element(max_value.begin(), max_value.end(), [](const hashMapPair &a, const hashMapPair &b) {return a.second < b.second;});
 }
 
 #endif
+
+
