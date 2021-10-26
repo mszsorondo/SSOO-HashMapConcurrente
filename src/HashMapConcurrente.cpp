@@ -120,7 +120,7 @@ void HashMapConcurrente::maxList(){
         //actualizamos index
         numList = hash_index.fetch_add(1);
     }
-    terminate(); // terminar thread
+    // terminate(); // terminar thread
 }
 
 hashMapPair HashMapConcurrente::maximoParalelo(unsigned int cant_threads) {
