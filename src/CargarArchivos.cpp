@@ -7,7 +7,7 @@
 #include <pthread.h>    //lib de threads
 
 #include "CargarArchivos.hpp"
-
+    
 int cargarArchivo(HashMapConcurrente &hashMap, std::string filePath) {
     std::fstream file;
     int cant = 0;
