@@ -45,18 +45,7 @@ class ListaAtomica {        // esto es lista atomica
         while(!(this->_cabeza.compare_exchange_weak(iter,nuevo))); // polling?
     }
 
-    // void insertar(const T &valor) {
-    //     // Completar (Ejercicio 1)
-    //     // creamos el nuevo nodo
-    //     m.lock();//---------------------
-
-    //     Nodo* nuevo = new Nodo(valor);
-    //     //buscamos el ultimo
-    //     Nodo* iter = _cabeza;
-    //     nuevo->_siguiente = iter;
-        
-    //     m.unlock();//------------------
-    // }
+    
 
     T& operator[](size_t i) const {
         Nodo *n = _cabeza.load();
