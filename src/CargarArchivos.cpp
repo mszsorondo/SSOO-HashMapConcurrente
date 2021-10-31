@@ -25,6 +25,7 @@ int cargarArchivo(HashMapConcurrente &hashMap, std::string filePath)
         // Completar (Ejercicio 4)
         hashMap.incrementar(palabraActual);
         cant++;
+        
     }
     // Cierro el archivo.
     if (!file.eof())
