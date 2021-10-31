@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-
 #include "ListaAtomica.hpp"
 
 typedef std::pair<std::string, unsigned int> hashMapPair;

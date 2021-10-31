@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include <vector>
 #include <string>
-#include <pthread.h>
 #include <mutex>
 
 #include "HashMapConcurrente.hpp"

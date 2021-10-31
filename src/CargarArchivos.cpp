@@ -4,8 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <pthread.h> //lib de threads
-
+#include <thread>
 #include "CargarArchivos.hpp"
 
 int cargarArchivo(HashMapConcurrente &hashMap, std::string filePath)
@@ -45,44 +44,40 @@ struct arg_struct
     atomic<int> *file_index;
 } args;
 
-void *stmf(void *varg)
+void *stmf(HashMapConcurrente* h, std::vector<string> *filePaths , atomic<int>* file_index)
 { // single thread multiple files
 
-    struct arg_struct *data;
-    data = (struct arg_struct *)varg;
 
-    int path_index = data->file_index->fetch_add(1); // actualizamos index
-    while ((long unsigned int)path_index < (*data->filePaths).size())
+
+    int path_index = file_index->fetch_add(1); // actualizamos index
+    while ((long unsigned int)path_index < (*filePaths).size())
     {
         // si estamos aca es que podemos acceder al archivo dentro de filePaths en la posicion path_index
-        cargarArchivo(*data->hashMap, (*data->filePaths)[path_index]);
+        cargarArchivo(*h, (*filePaths)[path_index]);
 
         // actualizamos index
-        path_index = data->file_index->fetch_add(1);
+        path_index = file_index->fetch_add(1);
     }
-    pthread_exit(NULL); // terminar thread
+    // terminar thread
 }
 
 void cargarMultiplesArchivos(HashMapConcurrente &hashMap, unsigned int cantThreads, std::vector<std::string> filePaths)
 {
     // Completar (Ejercicio 4)
-    std::vector<pthread_t> ts(cantThreads);
+    // thread ts[cantThreads];
+    vector<std::thread> ts(cantThreads);
     atomic<int> count(0);
-    struct arg_struct *varg = (struct arg_struct *)malloc(sizeof(struct arg_struct));
-    varg->hashMap = &hashMap;
-    varg->filePaths = &filePaths;
-    varg->file_index = &count;
+
     for (long unsigned int i = 0; i < cantThreads; ++i)
     {
-        pthread_create(&ts[i], NULL, &stmf, (void *)varg);
+        ts[i] = thread(&stmf, &hashMap, &filePaths, &count);
     }
 
     for (unsigned int i = 0; i < cantThreads; ++i)
     { // joineamos threads
         // std::cout << "q onda" << "q onda" << endl;
-        pthread_join(ts[i], NULL);
+        ts[i].join();
     }
-    free(varg);
 }
 
 #endif
