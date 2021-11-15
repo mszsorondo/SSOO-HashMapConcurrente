@@ -239,7 +239,7 @@ LT_BEGIN_TEST(TestsEjercicio4, NOSOTROSCargarMultiplesArchivosFuncionaDosThreads
     // LT_CHECK_EQ(hM.valor("tiranosaurio"), 2);
     // LT_CHECK_EQ(hM.valor("linux"), 3);
     // LT_CHECK_EQ(hM.valor("estegosaurio"), 4);    
-    LT_CHECK_EQ(hM.claves().size(), 55);
+    LT_CHECK_EQ(hM.claves().size(), 57);
 LT_END_TEST(NOSOTROSCargarMultiplesArchivosFuncionaDosThreads)
 
 // Ejecutar tests

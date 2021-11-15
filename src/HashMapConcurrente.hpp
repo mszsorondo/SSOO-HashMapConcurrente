@@ -28,7 +28,7 @@ class HashMapConcurrente {
     void maxList();
     ListaAtomica<hashMapPair>::iterator itSearch (std::string clave);
     ListaAtomica<hashMapPair> *tabla[HashMapConcurrente::cantLetras];
-    std::vector<std::string> c;
+   //  std::vector<std::string> c;
 
 
     static unsigned int hashIndex(std::string clave);

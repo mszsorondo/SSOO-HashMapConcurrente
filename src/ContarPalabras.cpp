@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     tiempo_carga = (double)(fin_carga.tv_sec - inicio_carga.tv_sec) + (double)(fin_carga.tv_nsec - inicio_carga.tv_nsec) / (double)BILLION;
     hashMapPair maximo;
     double tiempo_max;
-    if (cant_threads_busqueda == 1)
+    if (cant_threads_busqueda == 0)
     {
         clock_gettime(CLOCK_REALTIME, &inicio_max);
         maximo = h.maximo();
@@ -67,6 +67,11 @@ int main(int argc, char **argv)
     tiempo_max = (double)(fin_max.tv_sec - inicio_max.tv_sec) + (double)(fin_max.tv_nsec - inicio_max.tv_nsec) / (double)BILLION;
 
     // print carga -> bus
+
+    std::ofstream fileResults;
+    fileResults.open(addr+"/results.txt", std::ios::app);
+    fileResults<<tiempo_carga<<"\n";
+    fileResults.close();
     std::cout << tiempo_carga << " " << tiempo_max << " " << maximo.first << " " << maximo.second << std::endl;
     return 0;
 }

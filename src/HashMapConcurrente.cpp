@@ -41,7 +41,7 @@ void HashMapConcurrente::incrementar(std::string clave) {
 
     ListaAtomica<hashMapPair>::iterator it = itSearch(clave);
     if(it == (*lista).end()){
-        this->c.push_back(clave);
+        //this->c.push_back(clave); 
         lista->insertar(make_pair(clave, 0));
         it = (*lista).begin();
     }
@@ -49,11 +49,36 @@ void HashMapConcurrente::incrementar(std::string clave) {
 
     ms[index].unlock();//-------
 }
-
+// void store(T desired, std::memory_order order);
+// T load(std::memory_order = std::memory_order::seq_cst);
+// T fetch_add(T arg, std::memory_order order);
+// bool compare_exchange_weak(T& expected, T desired,
+// std::memory_order order);
+// bool compare_exchange_strong(T& expected, T desired,
+// std::memory_order order);
+// // solo para std::atomic_flag
+// bool test_and_set(std::memory_order order);
 std::vector<std::string> HashMapConcurrente::claves() {
-    return this->c;
-}
+    vector<std::string> claves;
+    // bool encontro;
+    for (unsigned int index = 0; index < HashMapConcurrente::cantLetras; index++) {
+        ms[index].lock();
+        for (auto &p : *tabla[index]) {
+            // encontro = false;
+            // for(auto word : claves)
+            //     if(p.first == word)
+            //         encontro = true;
+            // if (!encontro)
+                claves.push_back(p.first);
+        }
+        ms[index].unlock();
+    }
 
+    return claves;
+
+    
+}
+///tp 3 1 ../python/instancias/exp_unif 2 
 unsigned int HashMapConcurrente::valor(std::string clave) {
     ListaAtomica<hashMapPair> *lista = (this->tabla)[hashIndex(clave)];
 
