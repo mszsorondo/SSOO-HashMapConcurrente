@@ -1,6 +1,6 @@
 import math
 from random_word import RandomWords
-
+import time
 class WordGenerator:
 	def __init__(self, source_dict):
 		self.source_dict = source_dict
@@ -29,4 +29,19 @@ class WordGenerator:
 		last = min(fro+N, len(self.split[fstLet])-1)
 		return self.split[fstLet][fro:last]
 
-
+	def amplifyList(self,lst,let):
+		n = len(lst)
+		i=0
+		while(i<n):
+			newWord = lst[i]+let
+			lst.append(newWord)
+			i = i + 1
+		return lst
+	def amplifySourceDict(self,let):
+		self.source_dict = self.amplifyList(self.source_dict,let)
+		print("Esperando")
+		time.sleep(5)
+		print("reanudando")
+	def superAmplifyDict(self,string):
+		for charac in string:
+			self.amplifySourceDict(charac)
