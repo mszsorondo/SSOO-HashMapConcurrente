@@ -3,7 +3,7 @@
 import os
 from generExp import generarExperimento
 
-uniformidades = [1,6,13,20,25]
+uniformidades = [1,2,3]
 
 def experimentoDistintasUniformidades(u):
 	for k in uniformidades:

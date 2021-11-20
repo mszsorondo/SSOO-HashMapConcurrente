@@ -10,11 +10,20 @@ No importa la letra insetable
 def generarExperimento(unstability, letter, folder):
 	word_file = "/usr/share/dict/words"
 	WORDS = open(word_file).read().splitlines()
-	superlong_word = "abcdefghijklmnopqrstuvwxyz1234567890-=" #hacer una mas larga todavia
-	wg = WordGenerator(WORDS)
+	filtered = []
+	for word in WORDS:
+		if (ord(word[0])<=ord('d') and ord(word[0])>=ord('a')):
+			filtered.append(word)
+		
+		
+	superlong_word = "abcde" #hacer una mas larga todavia
+	wg = WordGenerator(filtered)
 	wg.superAmplifyDict(superlong_word)
 	
 	wg.splitByStart()
+
+	for lis in wg.split:
+		print(len(lis))
 	
 	now = os.getcwd()
 	newfold = now + "/" +folder
@@ -23,23 +32,19 @@ def generarExperimento(unstability, letter, folder):
 	letasc = 97
 	i = 0
 	reps = unstability
-	while(i<26):
+	while(i<3):
+		i = i + 1
 		let = chr(letasc)
-		
-		if(let=="x"):
-			letasc = letasc + 1
-			i = i + 1
-			continue
 		if(let==letter):
-			now = wg.getNwordsFrom(let, 2000,(unstability-reps)*2000)
+			now = wg.getNwordsFrom(let, 20000,(unstability-reps)*20000)
 		else:
-			now = wg.getNwordsFrom(let, 2000,0)
+			now = wg.getNwordsFrom(let, 20000,0)
 		
-		print("cantPalabras = ",len(now),"\n")
+		
 		# escribirlas en el archivo
 		f = open(newfold+"/"+let+str(i)+"2000", "w")
 		f.writelines(["%s\n" % item  for item in now])
-		i = i + 1	
+			
 		if(let != letter or ((let==letter) & (reps==1))):
 			letasc = letasc + 1
 		else:

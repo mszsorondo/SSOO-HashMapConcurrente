@@ -1,10 +1,10 @@
 import math
-from random_word import RandomWords
 import time
 class WordGenerator:
 	def __init__(self, source_dict):
 		self.source_dict = source_dict
 		self.split = None
+		
 	def getAllStartingWith(self,fstLet, srcDict, start):
 		i = start
 		res = []
@@ -15,6 +15,7 @@ class WordGenerator:
 			i = i + 1
 		return res
 
+			
 	def splitByStart(self):
 		byFstLet = {}
 		ascii_current = 97
@@ -22,6 +23,7 @@ class WordGenerator:
 			byFstLet[chr(ascii_current)] = self.getAllStartingWith(chr(ascii_current), self.source_dict, 0)
 			ascii_current = ascii_current+1;
 		self.split = byFstLet
+	
 	def getNwordsFrom(self,fstLet, N,fro):
 		""" Get N words starting with some given letter """
 		res = []
@@ -34,14 +36,13 @@ class WordGenerator:
 		i=0
 		while(i<n):
 			newWord = lst[i]+let
+			#print(newWord)
 			lst.append(newWord)
 			i = i + 1
 		return lst
 	def amplifySourceDict(self,let):
 		self.source_dict = self.amplifyList(self.source_dict,let)
-		print("Esperando")
-		time.sleep(5)
-		print("reanudando")
+		
 	def superAmplifyDict(self,string):
-		for charac in string:
-			self.amplifySourceDict(charac)
+		for i in range(len(string)):
+			self.amplifySourceDict(string[i])
